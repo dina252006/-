@@ -1,0 +1,13 @@
+SELECT `state` AS `state_9ed39e`,
+       sum(`orders_count`) AS `Number of Orders_ad7045`
+FROM
+  (SELECT c.state,
+          COUNT(o.orderid) AS orders_count
+   FROM dvdstore.orders o
+   JOIN dvdstore.customers c ON o.customerid = c.customerid
+   GROUP BY c.state
+   ORDER BY orders_count DESC
+   LIMIT 5) AS `virtual_table`
+GROUP BY `state_9ed39e`
+ORDER BY `Number of Orders_ad7045` DESC
+LIMIT 1000;
