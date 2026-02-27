@@ -1,0 +1,41 @@
+SELECT `category` AS `Category_3adbdb`,
+       sum(`revenue`) AS `Revenue_54358a`
+FROM
+  (SELECT *
+   FROM
+     (SELECT category,
+             revenue,
+             SUM(revenue) OVER (
+                                ORDER BY revenue DESC) / SUM(revenue) OVER () AS cumulative_share
+      FROM
+        (SELECT p.category AS category,
+                SUM(p.price * ol.quantity) AS revenue
+         FROM dvdstore.orderlines AS ol
+         JOIN dvdstore.products AS p ON ol.prod_id = p.prod_id
+         GROUP BY p.category))
+   WHERE cumulative_share <= 0.8
+   ORDER BY revenue DESC) AS `virtual_table`
+GROUP BY `Category_3adbdb`
+ORDER BY `Revenue_54358a` DESC
+LIMIT 1000;
+-------
+SELECT `category` AS `Category_3adbdb`,
+       sum(`cumulative_share`) AS `Cumulative share_e5575c`
+FROM
+  (SELECT *
+   FROM
+     (SELECT category,
+             revenue,
+             SUM(revenue) OVER (
+                                ORDER BY revenue DESC) / SUM(revenue) OVER () AS cumulative_share
+      FROM
+        (SELECT p.category AS category,
+                SUM(p.price * ol.quantity) AS revenue
+         FROM dvdstore.orderlines AS ol
+         JOIN dvdstore.products AS p ON ol.prod_id = p.prod_id
+         GROUP BY p.category))
+   WHERE cumulative_share <= 0.8
+   ORDER BY revenue DESC) AS `virtual_table`
+GROUP BY `Category_3adbdb`
+ORDER BY `Cumulative share_e5575c` DESC
+LIMIT 10000;
