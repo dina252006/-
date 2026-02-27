@@ -1,0 +1,6 @@
+SELECT toStartOfDay(toDateTime(`orderdate`)) AS `orderdate_651d2e`,
+       sum(`totalamount`) AS `Total Revenue_5d450f`
+FROM `dvdstore`.`orders`
+GROUP BY `orderdate_651d2e`
+ORDER BY `Total Revenue_5d450f` DESC
+LIMIT 10000;
