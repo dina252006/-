@@ -1,0 +1,3 @@
+SELECT AVG(`totalamount`) AS `AVG(totalamount)_2bc1c3`
+FROM `dvdstore`.`orders`
+LIMIT 50000;
