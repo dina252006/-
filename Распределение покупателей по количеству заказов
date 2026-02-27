@@ -1,0 +1,15 @@
+SELECT `orders_cnt` AS `Число заказов клиента_898cb4`,
+       sum(`customers_cnt`) AS `Количество клиентов_1c6634`
+FROM
+  (WITH customer_orders AS
+     (SELECT customerid,
+             COUNT(*) AS orders_cnt
+      FROM dvdstore.orders
+      GROUP BY customerid) SELECT orders_cnt,
+                                  COUNT(*) AS customers_cnt
+   FROM customer_orders
+   GROUP BY orders_cnt
+   ORDER BY orders_cnt) AS `virtual_table`
+GROUP BY `Число заказов клиента_898cb4`
+ORDER BY `Количество клиентов_1c6634` DESC
+LIMIT 1000;
